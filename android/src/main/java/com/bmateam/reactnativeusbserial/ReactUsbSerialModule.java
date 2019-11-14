@@ -20,6 +20,8 @@ import com.facebook.react.bridge.WritableMap;
 import com.hoho.android.usbserial.driver.UsbSerialDriver;
 import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.driver.UsbSerialProber;
+import com.hoho.android.usbserial.driver.ProbeTable;
+import com.hoho.android.usbserial.driver.CdcAcmSerialDriver;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -72,12 +74,12 @@ public class ReactUsbSerialModule extends ReactContextBaseJavaModule {
 
         try {
             int prodId = deviceObject.getInt("productId");
+            int vendorId = deviceObject.getInt("vendorId");
             UsbManager manager = getUsbManager();
-            UsbSerialDriver driver = getUsbSerialDriver(prodId, manager);
+            UsbSerialDriver driver = getUsbSerialDriver(vendorId, prodId, manager);
 
             if (manager.hasPermission(driver.getDevice())) {
                 WritableMap usd = createUsbSerialDevice(manager, driver);
-
                 p.resolve(usd);
             } else {
                 requestUsbPermission(manager, driver.getDevice(), p);
@@ -154,12 +156,18 @@ public class ReactUsbSerialModule extends ReactContextBaseJavaModule {
         return usbManager;
     }
 
-    private UsbSerialDriver getUsbSerialDriver(int prodId, UsbManager manager) throws Exception {
+    private UsbSerialDriver getUsbSerialDriver(int vendorId, int prodId, UsbManager manager) throws Exception {
 
         if (prodId == 0)
             throw new Error(new Error("The deviceObject is not a valid 'UsbDevice' reference"));
 
         List<UsbSerialDriver> availableDrivers = UsbSerialProber.getDefaultProber().findAllDrivers(manager);
+        if (availableDrivers.isEmpty()) {
+            ProbeTable customTable = new ProbeTable();
+            customTable.addProduct(vendorId, prodId, CdcAcmSerialDriver.class);
+            UsbSerialProber prober = new UsbSerialProber(customTable);
+            availableDrivers = prober.findAllDrivers(manager);
+        }
 
         // Reject if no driver is available
         if (availableDrivers.isEmpty())
@@ -192,7 +200,7 @@ public class ReactUsbSerialModule extends ReactContextBaseJavaModule {
 
                             try {
                                 WritableMap usd = createUsbSerialDevice(manager,
-                                        getUsbSerialDriver(device.getProductId(), manager));
+                                        getUsbSerialDriver(device.getVendorId, device.getProductId(), manager));
 
                                 p.resolve(usd);
                             } catch (Exception e) {

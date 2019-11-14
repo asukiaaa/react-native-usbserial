@@ -1,6 +1,6 @@
 {
-  "name": "react-native-usbserial",
-  "version": "1.0.1",
+  "name": "react-native-usbserial-cvk",
+  "version": "1.0.2",
   "description": "An USB Serial driver for react-native",
   "nativePackage": true,
   "main": "index.js",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mapaiva/react-native-usbserial.git"
+    "url": "git+https://github.com/jeffer80/react-native-usbserial.git"
   },
   "keywords": [
     "react-native",
@@ -22,7 +22,7 @@
   "author": "Matheus Paiva",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mapaiva/react-native-usbserial/issues"
+    "url": "https://github.com/jeffer80/react-native-usbserial/issues"
   },
-  "homepage": "https://github.com/mapaiva/react-native-usbserial#readme"
+  "homepage": "https://github.com/jeffer80/react-native-usbserial#readme"
 }
