@@ -200,7 +200,7 @@ public class ReactUsbSerialModule extends ReactContextBaseJavaModule {
 
                             try {
                                 WritableMap usd = createUsbSerialDevice(manager,
-                                        getUsbSerialDriver(device.getVendorId, device.getProductId(), manager));
+                                        getUsbSerialDriver(device.getVendorId(), device.getProductId(), manager));
 
                                 p.resolve(usd);
                             } catch (Exception e) {
