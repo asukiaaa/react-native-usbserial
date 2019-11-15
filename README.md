@@ -5,7 +5,7 @@ This wrapper implementation is totally based on [usb-serial-for-android](https:/
 ## Installation
 
 ```
-npm install react-native-usbserial --save
+npm install react-native-usbserial-cvk --save
 ```
 
 ## Integrate module
@@ -42,8 +42,7 @@ async function getDeviceAsync() {
 
         if (firstDevice) {
             const usbSerialDevice = await usbs.openDeviceAsync(firstDevice);
-            
-            console.log(usbSerialDevice);
+            usbSerialDevice.writeAsync(data_value);
         }
     } catch (err) {
         console.warn(err);
