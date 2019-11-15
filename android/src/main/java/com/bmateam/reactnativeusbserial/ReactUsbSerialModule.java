@@ -54,12 +54,14 @@ public class ReactUsbSerialModule extends ReactContextBaseJavaModule {
                 UsbDevice device = usbDevices.get(key);
                 WritableMap map = Arguments.createMap();
 
-                map.putString("name", device.getDeviceName());
+                
                 map.putInt("deviceId", device.getDeviceId());
-                map.putInt("productId", device.getProductId());
-                map.putInt("vendorId", device.getVendorId());
                 map.putString("deviceName", device.getDeviceName());
-
+                map.putInt("vendorId", device.getVendorId());
+                map.putInt("productId", device.getProductId());
+                map.putString("productName", device.getProductName());
+                map.putString("serialNumber", device.getSerialNumber());
+                
                 deviceArray.pushMap(map);
             }
 
