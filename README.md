@@ -5,14 +5,14 @@ This wrapper implementation is totally based on [usb-serial-for-android](https:/
 ## Installation
 
 ```
-npm install react-native-usbserial --save
+npm install react-native-usbserial-cvk --save
 ```
 
 ## Integrate module
 
 To integrate `react-native-usbserial` with the rest of your react app just execute:
 ```
-react-native link react-native-usbserial
+react-native link react-native-usbserial-cvk
 ```
 
 ### Android
@@ -21,6 +21,7 @@ To integrate it with your android application you also need to add these followi
 
 ```gradle
 repositories {
+        maven { url 'https://jitpack.io' }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 ```
@@ -28,27 +29,20 @@ repositories {
 ## Usage
 
 ```javascript
-import { UsbSerial} from 'react-native-usbserial';
+import { UsbSerial} from 'react-native-usbserial-cvk';
 
-const usbs = new UsbSerial();
+let usb = new UsbSerial();
 
-async function getDeviceAsync() {
-
-    try {
-        const deviceList = await usbs.getDeviceListAsync();
-        const firstDevice = deviceList[0];
-        
-        console.log(firstDevice);
-
-        if (firstDevice) {
-            const usbSerialDevice = await usbs.openDeviceAsync(firstDevice);
-            
-            console.log(usbSerialDevice);
-        }
-    } catch (err) {
-        console.warn(err);
-    }
-}
-
-getDeviceAsync();
+// get usb device list
+usb.getDeviceListAsync()
+   .then(data => {
+      console.log(data);
+     });
+   });
+   
+// write data to usb device
+usb.openDeviceAsync(this.state.usbDeviceList[0])
+   .then(usbDevice => {
+     usbDevice.writeAsync(this.plt);
+   });
 ```
